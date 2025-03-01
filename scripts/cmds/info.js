@@ -1,71 +1,72 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-
+const fs = require('fs');const moment = require('moment-timezone');
 module.exports = {
-	config: {
-		name: "info",
-		author: "ArYAN",
-		role: 0,
-		shortDescription: "info and my owner the cmd",
-		longDescription: "",
-		category: "INFO",
-		guide: "{pn}"
-	},
+  config: {
+    name: "info",
+    aliases: ["inf", "in4"],
+    version: "2.0",
+    author: "VEX_ADNAN",
+    countDown: 5,
+    role: 0,
+    shortDescription: {
+      vi: "",
+      en: "Sends information about the bot and admin along with an image."
+    },
+    longDescription: {
+      vi: "",
+      en: "Sends information about the bot and admin along with an image."
+    },
+    category: "Information",
+    guide: {
+      en: "{pn}"
+    },
+    envConfig: {}
+  },
 
-	onStart: async function ({ api, event }) {
-		try {
-			const ArYanInfo = {
-				Botname: 'Eren's bot',
-				Prefix: '/',
-				Owner: 'Ayaan',
-				Age: '17+',
-				Tiktok: 'NONE,
-				Whatsapp: 'NOT SHARE',
-				Bio: '⎯⃝"🌻আ্ঁই্ঁছি্ঁরে্ঁ নে্ঁকা্ঁমু্ঁ ক্ঁর্ঁতে্ঁ 😼🙄🌺⎯͢⎯⃝🩷🐰',
-				Relationship: 'SINGLE',
-				Messenger: 'shor mgi 😪',
-				Instagram: 'NONE',
-				Grouplink: 'pai nai🙂'
-			};
+  onStart: async function ({ message }) {
+    this.sendInfo(message);
+  },
 
-			const ArYan = 'https://i.imgur.com/p5zcYyX.mp4';
-			const tmpFolderPath = path.join(__dirname, 'tmp');
+  onChat: async function ({ event, message }) {
+    if (event.body && event.body.toLowerCase() === "info") {
+      this.sendInfo(message);
+    }
+  },
 
-			if (!fs.existsSync(tmpFolderPath)) {
-				fs.mkdirSync(tmpFolderPath);
-			}
+  sendInfo: async function (message) {
+    const botName = " Eren's bot👀 ";
+    const botPrefix = "/";
+    const authorName = "𝐄𝐫𝐞𝐧 𝐘𝐞𝐚𝐠𝐞𝐫";
+    const authorFB = "NOPE ";
+    const authorInsta = "Shor Mgii 😒";
+    const status = "𝗣𝘂𝗿𝗲 𝗦𝗶𝗻𝗴𝗹𝗲";
 
-			const imgResponse = await axios.get(ArYan, { responseType: 'arraybuffer' });
-			const imgPath = path.join(tmpFolderPath, 'ArYan_img.jpeg');
+    const urls = JSON.parse(fs.readFileSync('scripts/cmds/assets/Ayan.json'));
+    const link = urls[Math.floor(Math.random() * urls.length)];
 
-			fs.writeFileSync(imgPath, Buffer.from(imgResponse.data, 'binary'));
+    const now = moment().tz('Asia/Dhaka');
+    const date = now.format('MMMM Do YYYY');
+    const time = now.format('h:mm:ss A');
 
-			const response = `
-• Bot & Owner Info
-╰‣ Bot Name: ${ArYanInfo.Botname}
-╰‣ Bot Prefix: ${ArYanInfo.Prefix}
-╰‣ Owner: ${ArYanInfo.Owner}
-╰‣ Age: ${ArYanInfo.Age}
-╰‣ Tiktok: ${ArYanInfo.Tiktok}
-╰‣ Whatsapp: ${ArYanInfo.Whatsapp}
-╰‣ relationship: ${ArYanInfo.Relationship}
-╰‣ bio: ${ArYanInfo.Bio}
-╰‣ Messenger: ${ArYanInfo.Messenger}
-╰‣ Instagram: ${ArYanInfo.Instagram}
-╰‣ Grouplink: ${ArYanInfo.Grouplink}`;
+    const uptime = process.uptime();
+    const seconds = Math.floor(uptime % 60);
+    const minutes = Math.floor((uptime / 60) % 60);
+    const hours = Math.floor((uptime / (60 * 60)) % 24);
+    const days = Math.floor(uptime / (60 * 60 * 24));
+    const uptimeString = `${hours}h ${minutes}m ${seconds}sec`;
 
-			await api.sendMessage({
-				body: response,
-				attachment: fs.createReadStream(imgPath)
-			}, event.threadID, event.messageID);
-
-			fs.unlinkSync(imgPath);
-
-			api.setMessageReaction('🐔', event.messageID, (err) => {}, true);
-		} catch (error) {
-			console.error('Error in ArYaninfo command:', error);
-			return api.sendMessage('An error occurred while processing the command.', event.threadID);
-		}
-	}
+    message.reply({
+      body: `╭────────────◊
+├‣ 𝐁𝐨𝐭 & 𝐎𝐰𝐧𝐞𝐫 𝐈𝐧𝐟𝐨𝐫𝐦𝐚𝐭𝐢𝐨𝐧 
+├‣ 𝐍𝐚𝐦𝐞: ${authorName}
+├‣ 𝐁𝐨𝐭 𝐍𝐚𝐦𝐞:  ${botName}
+├‣ 𝐏𝐫𝐞𝐟𝐢𝐱:  ${botPrefix}
+├‣ 𝐅𝐛: ${authorFB}
+├‣ 𝐈𝐧𝐬𝐭𝐚𝐠𝐫𝐚𝐦:  ${authorInsta}
+├‣ 𝐑𝐞𝐥𝐚𝐭𝐢𝐨𝐧𝐬𝐡𝐢𝐩: ${status}   
+├‣ 𝐓𝐢𝐦𝐞:  ${time}
+├‣ 𝐔𝐩𝐭𝐢𝐦𝐞: ${uptimeString}
+╰────────────◊`,
+      attachment: await global.utils.getStreamFromURL(link)
+    });
+  }
 };
