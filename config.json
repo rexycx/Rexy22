@@ -17,15 +17,15 @@
     "ignoreCommand": []
   },
   "adminBot": [
-    "61551774501334",
-    "61560309809422"
+    "100045513516529",
+    "61572491867501"
   ],
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "⇛⌘ 𝐀𝐃𝐍𝐀𝐍 𝐑𝐎𝐁𝐎𝐓 𝐕 𝟐.𝟎 ⌘⇚",
+  "nickNameBot": " Eren's Bot 👀",
   "prefix": ".",
   "database": {
     "type": "sqlite",
