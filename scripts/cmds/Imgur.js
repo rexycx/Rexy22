@@ -1,23 +1,61 @@
-let axios = require("axios"); 
+const axios = require("axios");
+
 module.exports = {
   config: {
     name: "imgur",
-    aliases: [`imagegur`],
+    aliases: [],
     version: "1.0",
-    author: "otiney",
-    countDown: 0,
-    role: 0,
-    shortDescription: "upload any images in imgur server..",
-    longDescription: "upload any images in imgur server..",
-    category: "utility",
-    guide: "{pn} reply or add link of image"
+    author: "Mahi--",
+    shortDescription: "Upload media to Imgur.",
+    longDescription: "Uploads an image or video (via reply) to Imgur and returns the public Imgur link.",
+    category: "𝗠𝗘𝗗𝗜𝗔",
+    guide: "{p}imgur (reply to an image or video message)",
   },
-
   onStart: async function ({ api, event }) {
-    let linkanh = event.messageReply.attachments[0].url || args.join(" ");
-    if(!linkanh) return api.sendMessage('Please reply or enter the link 1 image!!!', event.threadID, event.messageID)
-    let res = await axios.get(`https://API-Web.miraiofficials123.repl.co/imgur?link=${encodeURIComponent(linkanh)}&apikey=18102004`);
-    let img = res.data.data;
-  return api.sendMessage(`${img}`, event.threadID, event.messageID)
-  }
+    try {
+      if (!event.messageReply || !event.messageReply.attachments || event.messageReply.attachments.length === 0) {
+        return api.sendMessage(
+          "❌ Please reply to an image or video message to upload it to Imgur.",
+          event.threadID,
+          event.messageID
+        );
+      }
+
+      const attachment = event.messageReply.attachments[0];
+      const mediaUrl = attachment.url;
+
+      api.sendMessage("W8°°°BOSS🪄👨🏿‍🌾", event.threadID, event.messageID);
+
+      const response = await axios.post(
+        "https://api.imgur.com/3/upload",
+        { image: mediaUrl },
+        {
+          headers: {
+            Authorization: "Bearer edd3135472e670b475101491d1b0e489d319940f",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const imgurData = response.data;
+      if (!imgurData || !imgurData.data || !imgurData.data.link) {
+        throw new Error("Failed to retrieve Imgur link.");
+      }
+
+      const imgurLink = imgurData.data.link;
+
+      api.sendMessage(
+        `${imgurLink}`,
+        event.threadID,
+        event.messageID
+      );
+    } catch (error) {
+      console.error("Error uploading to Imgur:", error.message);
+      api.sendMessage(
+        `❌ Error uploading to Imgur: ${error.message}`,
+        event.threadID,
+        event.messageID
+      );
+    }
+  },
 };
