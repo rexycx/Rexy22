@@ -17,7 +17,7 @@ module.exports = {
 		try {
 			const ArYanInfo = {
 				Botname: 'Eren's bot',
-				Prefix: '.',
+				Prefix: '/',
 				Owner: 'Ayaan',
 				Age: '17+',
 				Tiktok: 'NONE,
