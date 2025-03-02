@@ -1,12 +1,12 @@
  const axios = require("axios");
 
-const prefixes = ["bby", "janu", "babe", "bot", "sona", "bbu", "jaan"];
+const prefixes = ["bby", "janu", "babe", "Yeager", "sona", "bbu", "jaan"];
 
 module.exports = {
   config: {
     name: "bot",
     version: "1.6.9",
-    author: "xos Lafie",
+    author: "xos Eren",
     role: 0,
     description: {
       en: "No prefix command.",
