@@ -1,4 +1,4 @@
-#const { config } = global.GoatBot;
+const { config } = global.GoatBot;
 
 module.exports = {
 
@@ -223,4 +223,4 @@ module.exports = {
 
     }
 
-};#
+};
