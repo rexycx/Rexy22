@@ -17,16 +17,16 @@
     "ignoreCommand": []
   },
   "adminBot": [
-    "100045513516529",
-    "61572491867501"
+    "100058342072915",
+    "100058342072915"
   ],
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": " Eren's Bot 👀",
-  "prefix": "/",
+  "nickNameBot": " Nohara's Bot 👀",
+  "prefix": "+",
   "database": {
     "type": "sqlite",
     "uriMongodb": "",
